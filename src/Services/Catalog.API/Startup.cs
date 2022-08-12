@@ -25,6 +25,7 @@ namespace Catelog.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,6 +34,7 @@ namespace Catelog.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                
             }
 
             app.UseRouting();
@@ -42,6 +44,16 @@ namespace Catelog.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSwagger(options =>
+            {
+                //options.SerializeAsV2 = true;
+            });
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Catelog API v1");
+                //options.RoutePrefix = string.Empty;
             });
         }
     }

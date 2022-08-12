@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.32802.440
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{53E2933D-CD95-48B9-9856-0CB71F5F55CE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catelog.API", "Catelog.API", "{BC1E6626-0F73-432F-A4CC-8122A26E0D79}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalog.API", "Catalog.API", "{BC1E6626-0F73-432F-A4CC-8122A26E0D79}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catelog.API", "Services\Catelog.API\Catelog.API.csproj", "{A32D69A6-628D-4A0F-B788-3E3FDCDECACE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.API", "Services\Catelog.API\Catalog.API.csproj", "{A32D69A6-628D-4A0F-B788-3E3FDCDECACE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
