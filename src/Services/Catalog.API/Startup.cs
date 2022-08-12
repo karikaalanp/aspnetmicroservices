@@ -1,3 +1,5 @@
+using Catalog.API.Data;
+using Catalog.API.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -5,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +28,13 @@ namespace Catelog.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen( Options =>
+            {
+                Options.SwaggerDoc("v1", new OpenApiInfo {Title = "Catalog.API", Version = "v1" });
+            });
+
+            services.AddScoped<ICatalogContext, CatalogContext>();
+            services.AddScoped<IProductRepository, ProductRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,7 +43,13 @@ namespace Catelog.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                
+
+                app.UseSwagger();
+                app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Catalog.API v1");
+                });
+
             }
 
             app.UseRouting();
@@ -46,15 +61,7 @@ namespace Catelog.API
                 endpoints.MapControllers();
             });
 
-            app.UseSwagger(options =>
-            {
-                //options.SerializeAsV2 = true;
-            });
-            app.UseSwaggerUI(options =>
-            {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Catelog API v1");
-                //options.RoutePrefix = string.Empty;
-            });
+            
         }
     }
 }
