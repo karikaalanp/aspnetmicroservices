@@ -27,6 +27,27 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  orderdb:
+    container_name: orderdb
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Sbsl@kpro1112000
+    restart: always
+    ports:
+      - "2433:1433" 
+
+  rabbitmq:
+    container_name: rabbitmq
+    restart: always
+    ports:
+        - "5672:5672"
+        - "15672:15672"
+    volumes:
+        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+        - rabbitmq_go_net
+
   pgadmin:
     container_name: pgadmin
     environment:
@@ -46,7 +67,7 @@ services:
       - "9000:9000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
+      - portainer_data:/data  
 
   catalog.api:
     container_name: catalog.api
@@ -66,9 +87,9 @@ services:
       - "GrpcSettings:DiscountUrl=http://discount.grpc"
     depends_on:
       - basketdb
+      - rabbitmq
     ports:
       - "8001:80"
-
 
   discount.api:
     container_name: discount.api
@@ -80,7 +101,6 @@ services:
     ports:
       - "8002:80"
 
-
   discount.grpc:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -90,3 +110,14 @@ services:
     ports:
       - "8003:80"
 
+  ordering.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:OrderingConnectionString=Server=orderdb;Database=OrderDb;User Id=sa;Password=Sbsl@kpro1112000"
+      - "EmailSettings=FromAddress=karikaalan@gmail.com;ApiKey=;FromName=Karikalan P"
+      - "EventBusSettings:HostAddress=amqp://guest:guest@localhost:5672"
+    depends_on:
+      - orderdb
+      - rabbitmq
+    ports:
+      - "8004:80"
