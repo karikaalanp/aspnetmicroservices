@@ -1,3 +1,4 @@
+using EventBus.Messages.Common;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,29 +21,30 @@ namespace Ordering.API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        [System.Obsolete]
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationServices();
             services.AddInfrastructureServices(Configuration);
 
-             // MassTransit-RabbitMQ Configuration
-             services.AddMassTransit(config => {
+            // MassTransit-RabbitMQ Configuration
+            services.AddMassTransit(config =>
+            {
 
-                 config.AddConsumer<BasketCheckoutConsumer>();
+                config.AddConsumer<BasketCheckoutConsumer>();
 
-             //    config.UsingRabbitMq((ctx, cfg) => {
-             //        cfg.Host(Configuration["EventBusSettings:HostAddress"]);
+                config.UsingRabbitMq((ctx, cfg) =>
+                {
+                    cfg.Host(Configuration["EventBusSettings:HostAddress"]);
 
-             //        cfg.ReceiveEndpoint(EventBusConstants.BasketCheckoutQueue, c =>
-             //        {
-             //            c.ConfigureConsumer<BasketCheckoutConsumer>(ctx);
-             //        });
-             //    });
-             //});
+                    cfg.ReceiveEndpoint(EventBusConstants.BasketCheckoutQueue, c =>
+                    {
+                        c.ConfigureConsumer<BasketCheckoutConsumer>(ctx);
+                    });
+                });
+            });
 
-             services.AddMassTransitHostedService();
+             //services.AddMassTransitHostedService();
 
             // General Configuration
             services.AddScoped<BasketCheckoutConsumer>(); 

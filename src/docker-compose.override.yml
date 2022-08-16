@@ -36,17 +36,22 @@ services:
     ports:
       - "2433:1433" 
 
-  rabbitmq:
-    container_name: rabbitmq
+  rabbitmqcontainer:
+    container_name: rabbitmqcontainer
+    hostname: rabbitmqcontainer
+    environment:
+      - RABBITMQ_HOST=rabbitmqcontainer
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
     restart: always
     ports:
         - "5672:5672"
         - "15672:15672"
-    volumes:
-        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
-        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
-    networks:
-        - rabbitmq_go_net
+  #  volumes:
+  #      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+  #      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+  #  networks:
+  #      - rabbitmq_go_net
 
   pgadmin:
     container_name: pgadmin
@@ -85,9 +90,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - "CacheSetting:ConnectionString=basketdb:6379"
       - "GrpcSettings:DiscountUrl=http://discount.grpc"
+      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmqcontainer:5672"
     depends_on:
       - basketdb
-      - rabbitmq
+      - rabbitmqcontainer
     ports:
       - "8001:80"
 
@@ -115,9 +121,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - "ConnectionStrings:OrderingConnectionString=Server=orderdb;Database=OrderDb;User Id=sa;Password=Sbsl@kpro1112000"
       - "EmailSettings=FromAddress=karikaalan@gmail.com;ApiKey=;FromName=Karikalan P"
-      - "EventBusSettings:HostAddress=amqp://guest:guest@localhost:5672"
+      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmqcontainer:5672"
     depends_on:
       - orderdb
-      - rabbitmq
+      - rabbitmqcontainer
     ports:
       - "8004:80"

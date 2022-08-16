@@ -19,7 +19,7 @@ services:
   portainer:
     image: portainer/portainer-ce
 
-  rabbitmq:
+  rabbitmqcontainer:
     image: rabbitmq:3-management-alpine
 
   basket.api:
@@ -59,9 +59,9 @@ volumes:
   pgadmin_data:
 
 
-networks:
-  rabbitmq_go_net:
-    driver: bridge
+#networks:
+#  rabbitmq_go_net:
+#    driver: bridge
 
 
 
