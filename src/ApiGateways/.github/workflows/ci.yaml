@@ -1,0 +1,23 @@
+name: Build Docker Image.
+ 
+# Trigger workflow on push to master branch
+on:
+  push:
+    branches: [ master ]
+ 
+jobs:
+  build:
+    name: Build Docker Image
+    # uses ubuntu to build the image
+    runs-on: ubuntu-latest
+    # checkout code from master
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: '0'
+    # Build the Docker image on a push to master
+    - name: Build Docker Image
+      run:
+        docker build -t OcelotApiGateway .
+	  docker build -t Shopping.Aggregator .
