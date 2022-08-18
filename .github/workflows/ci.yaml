@@ -19,4 +19,5 @@ jobs:
     # Build the Docker image on a push to master
     - name: Build Docker Image
       run:
-        docker build -t aspnetmicroservices .
+        docker build -t OcelotApiGateway .
+        docker build -t Shopping.Aggregator .
