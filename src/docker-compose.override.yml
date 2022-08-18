@@ -127,3 +127,55 @@ services:
       - rabbitmqcontainer
     ports:
       - "8004:80"
+
+  ocelotapigateway:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "Logging:LogLevel=Default=Information;Microsoft=Warning;Microsoft.Hosting.Lifetime=Information"
+    ports:
+      - "8010:80"
+    depends_on:
+      - catalogdb
+      - basketdb
+      - discountdb
+      - orderdb
+      - rabbitmqcontainer
+      - catalog.api
+      - basket.api
+      - discount.grpc
+      - ordering.api
+      - shopping.aggregator
+
+  shopping.aggregator:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ApiSettings:CatalogUrl=http://catalog.api"
+      - "ApiSettings:BasketUrl=http://basket.api"
+      - "ApiSettings:OrderingUrl=http://ordering.api"
+    ports:
+      - "8005:80"
+    depends_on:
+      - catalogdb
+      - basketdb
+      - discountdb
+      - orderdb
+      - rabbitmqcontainer
+      - catalog.api
+      - basket.api
+      - discount.grpc
+      - ordering.api
+
+
+  shoppingwebapp:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ApiSettings:APIGatewayUrl=http://ocelotapigateway"
+#      - ASPNETCORE_URLS=https://+:443;http://+:80
+    depends_on:
+      - ocelotapigateway
+    ports:
+      - "8006:80"
+#      - "9006:443"
+#   volumes:
+#      - ${APPDATA}/Microsoft/UserSecrets:C:\Users\ContainerUser\AppData\Roaming\Microsoft\UserSecrets:ro
+#      - ${APPDATA}/ASP.NET/Https:C:\Users\ContainerUser\AppData\Roaming\ASP.NET\Https:ro

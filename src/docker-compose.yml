@@ -52,6 +52,24 @@ services:
       context: .
       dockerfile: Services\ordering\Ordering.API\Dockerfile
 
+  ocelotapigateway:
+    image: ${DOCKER_REGISTRY-}ocelotapigateway
+    build:
+      context: .
+      dockerfile: ApiGateways\OcelotApiGateway\Dockerfile
+
+  shopping.aggregator:
+    image: ${DOCKER_REGISTRY-}shoppingaggregator
+    build:
+      context: .
+      dockerfile: ApiGateways\Shopping.Aggregator\Dockerfile
+
+  shoppingwebapp:
+    image: ${DOCKER_REGISTRY-}shoppingwebapp
+    build:
+      context: .
+      dockerfile: WebApps\ShoppingWebApp\Dockerfile
+
 volumes:
   mongo_data:
   portainer_data:
@@ -62,6 +80,9 @@ volumes:
 #networks:
 #  rabbitmq_go_net:
 #    driver: bridge
+
+
+
 
 
 
