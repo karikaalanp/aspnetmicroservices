@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Cache.CacheManager;
+using Microsoft.OpenApi.Models;
 
 namespace OcelotApiGateway
 {
@@ -17,6 +18,11 @@ namespace OcelotApiGateway
         {
             services.AddOcelot()
                 .AddCacheManager(settings => settings.WithDictionaryHandle());
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "OcelotApiGateway", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -25,6 +31,8 @@ namespace OcelotApiGateway
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OcelotApiGateway v1"));
             }
 
             app.UseRouting();
