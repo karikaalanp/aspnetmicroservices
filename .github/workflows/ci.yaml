@@ -1,9 +1,8 @@
 name: Build Docker Image.
  
 # Trigger workflow on push to master branch
-on:
-  push:
-    branches: [ master ]
+on: [push]
+# branches: [ master ]
  
 jobs:
   build:
