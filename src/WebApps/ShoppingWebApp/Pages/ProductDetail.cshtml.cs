@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ShoppingWebApp.Model;
 using ShoppingWebApp.Services;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace ShoppingWebApp
 {
+    [Authorize]
     public class ProductDetailModel : PageModel
     {
         private readonly ICatalogService _catalogService;

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ShoppingWebApp.Model;
 using ShoppingWebApp.Services;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace ShoppingWebApp
 {
+    [Authorize]
     public class CheckOutModel : PageModel
     {
         private readonly IBasketService _basketService;
@@ -25,7 +27,7 @@ namespace ShoppingWebApp
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var userName = "swn";
+            var userName = "Karikalan";
             Cart = await _basketService.GetBasket(userName);
 
             return Page();
@@ -33,7 +35,7 @@ namespace ShoppingWebApp
 
         public async Task<IActionResult> OnPostCheckOutAsync()
         {
-            var userName = "swn";
+            var userName = "Karikalan";
             Cart = await _basketService.GetBasket(userName);
 
             if (!ModelState.IsValid)

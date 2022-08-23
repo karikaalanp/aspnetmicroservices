@@ -164,8 +164,6 @@ services:
       - basket.api
       - discount.grpc
       - ordering.api
-
-
   shoppingwebapp:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -174,8 +172,8 @@ services:
     depends_on:
       - ocelotapigateway
     ports:
-      - "8006:80"
-#      - "9006:443"
+      - "8012:80"
+#      - "9012:443"
 #   volumes:
 #      - ${APPDATA}/Microsoft/UserSecrets:C:\Users\ContainerUser\AppData\Roaming\Microsoft\UserSecrets:ro
 #      - ${APPDATA}/ASP.NET/Https:C:\Users\ContainerUser\AppData\Roaming\ASP.NET\Https:ro

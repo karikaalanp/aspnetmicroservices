@@ -10,5 +10,6 @@ namespace ShoppingWebApp.Services
         Task<IEnumerable<CatalogModel>> GetCatalogByCategory(string category);
         Task<CatalogModel> GetCatalog(string id);
         Task<CatalogModel> CreateCatalog(CatalogModel model);
+        Task<UserInfoViewModel> GetUserInfo();
     }
 }

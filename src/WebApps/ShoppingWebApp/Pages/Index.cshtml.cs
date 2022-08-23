@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ShoppingWebApp.Model;
 using ShoppingWebApp.Services;
@@ -8,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace ShoppingWebApp.Pages
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly ICatalogService _catalogService;
@@ -45,6 +50,11 @@ namespace ShoppingWebApp.Pages
 
             var basketUpdated = await _basketService.UpdateBasket(basket);
             return RedirectToPage("Cart");
+        }
+        public async Task Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
         }
     }
 }

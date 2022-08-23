@@ -1,5 +1,6 @@
 ﻿using Catalog.API.Entities;
 using Catalog.API.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,6 +12,7 @@ namespace Catalog.API.Controllers
 {
     [Route("api/V1/[controller]")]
     [ApiController]
+    [Authorize("CatalogPolicy")]
     public class CatalogController : ControllerBase
     {
         private readonly IProductRepository _repository;
